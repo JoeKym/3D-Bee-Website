@@ -3,13 +3,13 @@
 
   <head>
     <meta charset="UTF-8">
-    <title>Login - JoeKym Labs TM</title>
-    <meta name="description" content="Login to JoeKym Labs TM - Access your account and explore our 3D animation and web development services.">
+    <title>Sign Up - JoeKym Labs <sup>TM</sup></title>
+    <meta name="description" content="Create your JoeKym Labs TM account to access 3D animation and web development services.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://public.codepenassets.com/css/normalize-5.0.0.min.css">
     <link rel="stylesheet" href="./style.css">
     <style>
-      .login-container {
+      .auth-container {
         min-height: 100vh;
         display: flex;
         justify-content: center;
@@ -17,32 +17,32 @@
         padding: 2em;
         position: relative;
       }
-      .login-box {
+      .auth-box {
         background-color: rgba(27, 27, 27, 0.9);
         backdrop-filter: blur(20px);
         border: 1px solid rgba(238, 248, 206, 0.1);
         border-radius: 20px;
         padding: 3em 2.5em;
-        width: min(450px, 90vw);
+        width: min(500px, 92vw);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       }
-      .login-header {
+      .auth-header {
         text-align: center;
         margin-bottom: 2.5em;
       }
-      .login-header h1 {
+      .auth-header h1 {
         font-family: "devil breeze", sans-serif;
         font-size: 3em;
         color: #d1ff48;
         margin-bottom: 0.5em;
         font-weight: bold;
       }
-      .login-header p {
+      .auth-header p {
         color: #eef8ce;
         font-size: 1em;
         opacity: 0.8;
       }
-      .login-form {
+      .auth-form {
         display: flex;
         flex-direction: column;
         gap: 1.5em;
@@ -78,7 +78,7 @@
       .form-group input::placeholder {
         color: rgba(238, 248, 206, 0.4);
       }
-      .login-button {
+      .primary-button {
         background-color: #d1ff48;
         color: #1b1b1b;
         border: none;
@@ -91,31 +91,31 @@
         transition: all 0.3s ease;
         margin-top: 0.5em;
       }
-      .login-button:hover {
+      .primary-button:hover {
         background-color: #c4f038;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(209, 255, 72, 0.3);
       }
-      .login-button:active {
+      .primary-button:active {
         transform: translateY(0);
       }
-      .login-footer {
+      .auth-footer {
         text-align: center;
         margin-top: 2em;
         padding-top: 2em;
         border-top: 1px solid rgba(238, 248, 206, 0.1);
       }
-      .login-footer p {
+      .auth-footer p {
         color: rgba(238, 248, 206, 0.7);
         font-size: 0.9em;
         margin-bottom: 1em;
       }
-      .login-footer a {
+      .auth-footer a {
         color: #d1ff48;
         text-decoration: none;
         transition: color 0.3s ease;
       }
-      .login-footer a:hover {
+      .auth-footer a:hover {
         color: #c4f038;
         text-decoration: underline;
       }
@@ -135,52 +135,30 @@
       .back-link:hover {
         color: #d1ff48;
       }
-      .error-message {
-        background-color: rgba(255, 0, 0, 0.1);
-        border: 1px solid rgba(255, 0, 0, 0.3);
-        color: #ff6b6b;
+      .error-message, .success-message {
         padding: 1em;
         border-radius: 8px;
         font-size: 0.9em;
         display: none;
       }
-      .error-message.show {
+      .error-message {
+        background-color: rgba(255, 0, 0, 0.1);
+        border: 1px solid rgba(255, 0, 0, 0.3);
+        color: #ff6b6b;
+      }
+      .success-message {
+        background-color: rgba(0, 255, 127, 0.08);
+        border: 1px solid rgba(0, 255, 127, 0.2);
+        color: #8ef3c5;
+      }
+      .error-message.show, .success-message.show {
         display: block;
       }
-      .remember-forgot {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 0.9em;
-      }
-      .remember-forgot label {
-        display: flex;
-        align-items: center;
-        gap: 0.5em;
-        cursor: pointer;
-        color: #eef8ce;
-        font-weight: normal;
-        text-transform: none;
-      }
-      .remember-forgot input[type="checkbox"] {
-        width: auto;
-        margin: 0;
-        cursor: pointer;
-      }
-      .remember-forgot a {
-        color: #d1ff48;
-        text-decoration: none;
-        transition: color 0.3s ease;
-      }
-      .remember-forgot a:hover {
-        color: #c4f038;
-        text-decoration: underline;
-      }
       @media screen and (max-width: 767px) {
-        .login-header h1 {
+        .auth-header h1 {
           font-size: 2em;
         }
-        .login-box {
+        .auth-box {
           padding: 2em 1.5em;
         }
         .back-link {
@@ -194,21 +172,34 @@
   <body>
     <a href="index.html" class="back-link">← Back to Home</a>
     
-    <div class="login-container">
-      <div class="login-box">
-        <div class="login-header">
-          <h1>JoeKym Labs<sup>TM</sup></h1>
-          <p>Welcome back! Please login to your account</p>
+    <div class="auth-container">
+      <div class="auth-box">
+        <div class="auth-header">
+          <h1>Create Account</h1>
+          <p>Sign up to access JoeKym Labs<sup>TM</sup> experiences</p>
         </div>
         
         <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage"></div>
         
-        <form class="login-form" id="loginForm" onsubmit="handleLogin(event)">
+        <form class="auth-form" id="signupForm" onsubmit="handleSignup(event)">
           <div class="form-group">
-            <label for="email">Email Address</label>
+            <label for="fullName">Full Name</label>
+            <input 
+              type="text" 
+              id="fullName" 
+              name="fullName" 
+              placeholder="Enter your full name"
+              required
+              autocomplete="name"
+            >
+          </div>
+          
+          <div class="form-group">
+            <label for="signupEmail">Email Address</label>
             <input 
               type="email" 
-              id="email" 
+              id="signupEmail" 
               name="email" 
               placeholder="Enter your email"
               required
@@ -217,30 +208,36 @@
           </div>
           
           <div class="form-group">
-            <label for="password">Password</label>
+            <label for="signupPassword">Password</label>
             <input 
               type="password" 
-              id="password" 
+              id="signupPassword" 
               name="password" 
-              placeholder="Enter your password"
+              placeholder="Create a password"
               required
-              autocomplete="current-password"
+              minlength="8"
+              autocomplete="new-password"
             >
           </div>
           
-          <div class="remember-forgot">
-            <label>
-              <input type="checkbox" name="remember" id="remember">
-              Remember me
-            </label>
-            <a href="#forgot-password">Forgot password?</a>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input 
+              type="password" 
+              id="confirmPassword" 
+              name="confirmPassword" 
+              placeholder="Re-enter your password"
+              required
+              minlength="8"
+              autocomplete="new-password"
+            >
           </div>
           
-          <button type="submit" class="login-button">Login</button>
+          <button type="submit" class="primary-button">Create Account</button>
         </form>
         
-        <div class="login-footer">
-          <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+        <div class="auth-footer">
+          <p>Already have an account? <a href="login.html">Login here</a></p>
           <p style="margin-top: 1em; font-size: 0.8em; opacity: 0.6;">
             &copy; 2024 JoeKym Labs<sup>TM</sup>. All rights reserved.
           </p>
@@ -249,44 +246,65 @@
     </div>
     
     <script>
-      const LOGIN_ENDPOINT = "https://script.google.com/macros/s/AKfycby8E2ZH9PndS9EgFCBO9fCCKm_Lc6ahj9EW6Zi7Om3VJmAyW_oGFAkVdwDMjXUj8wV9xw/exec";
+      const SIGNUP_ENDPOINT = "https://script.google.com/macros/s/AKfycbw5l1-_MCGzaBBX8DCmkIv41OR0wFE1vYJNsFfrh9ZVAzOLIfHCPfpGJ7JRA0r0OBhk/exec";
 
-      function handleLogin(event) {
+      function handleSignup(event) {
         event.preventDefault();
         
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
+        const fullName = document.getElementById('fullName').value.trim();
+        const email = document.getElementById('signupEmail').value.trim();
+        const password = document.getElementById('signupPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
         const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
         
-        // Basic validation
-        if (!email || !password) {
+        const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+        
+        if (!fullName || !email || !password || !confirmPassword) {
           showError('Please fill in all fields');
           return;
         }
         
-        // Email validation
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
           showError('Please enter a valid email address');
           return;
         }
         
-        hideError();
+        if (password.length < 8) {
+          showError('Password must be at least 8 characters long');
+          return;
+        }
+        
+        if (password !== confirmPassword) {
+          showError('Passwords do not match');
+          return;
+        }
+        
+        hideMessage(errorMessage);
+        
+        const payload = {
+          fullname: fullName,
+          email,
+          password,
+          confirmpassword: confirmPassword
+        };
 
-        fetch(LOGIN_ENDPOINT, {
+        fetch(SIGNUP_ENDPOINT, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({ email, password })
+          body: JSON.stringify(payload)
         })
         .then(response => response.json())
         .then(data => {
           if (data.success) {
-            alert('Login recorded successfully in your Google Sheet.');
-            // window.location.href = 'index.html';
+            showSuccess(data.message || 'Account created and stored successfully.');
+            setTimeout(() => {
+              document.getElementById('signupForm').reset();
+            }, 200);
           } else {
-            showError(data.message || 'Login failed. Please try again.');
+            showError(data.message || 'Signup failed. Please try again.');
           }
         })
         .catch(() => {
@@ -296,16 +314,27 @@
       
       function showError(message) {
         const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
+        successMessage.classList.remove('show');
+        successMessage.textContent = '';
         errorMessage.textContent = message;
         errorMessage.classList.add('show');
-        setTimeout(() => {
-          hideError();
-        }, 5000);
+        setTimeout(() => hideMessage(errorMessage), 5000);
       }
       
-      function hideError() {
+      function showSuccess(message) {
         const errorMessage = document.getElementById('errorMessage');
+        const successMessage = document.getElementById('successMessage');
         errorMessage.classList.remove('show');
+        errorMessage.textContent = '';
+        successMessage.textContent = message;
+        successMessage.classList.add('show');
+        setTimeout(() => hideMessage(successMessage), 6000);
+      }
+      
+      function hideMessage(element) {
+        if (!element) return;
+        element.classList.remove('show');
       }
     </script>
   </body>
