@@ -6,6 +6,66 @@
     <title>Sign Up - JoeKym Labs <sup>TM</sup></title>
     <meta name="description" content="Create your JoeKym Labs TM account to access 3D animation and web development services.">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="module">import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
+import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
+import { gsap } from "https://cdn.skypack.dev/gsap";
+
+const camera = new THREE.PerspectiveCamera(
+  10,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+camera.position.z = 13;
+camera.position.y = -1;
+
+const scene = new THREE.Scene();
+let bee;
+let mixer;
+const loader = new GLTFLoader();
+
+loader.load(
+  "https://raw.githubusercontent.com/DennysDionigi/bee-glb/94253437c023643dd868592e11a0fd2c228cfe07/demon_bee_full_texture.glb",
+  function (gltf) {
+    bee = gltf.scene;
+    scene.add(bee);
+    mixer = new THREE.AnimationMixer(bee);
+    mixer.clipAction(gltf.animations[0]).play();
+    gsap.to(bee.position, { x: 0, y: -1, z: 0, duration: 2 });
+    gsap.to(bee.rotation, { y: 1.5, duration: 2 });
+  },
+  function (xhr) {
+    console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+  },
+  function (error) {
+    console.error("Error loading model:", error);
+  }
+);
+
+const renderer = new THREE.WebGLRenderer({ alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.getElementById("container3D").appendChild(renderer.domElement);
+
+const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
+scene.add(ambientLight);
+
+const topLight = new THREE.DirectionalLight(0xffffff, 1);
+topLight.position.set(500, 500, 500);
+scene.add(topLight);
+
+const reRender3D = () => {
+  requestAnimationFrame(reRender3D);
+  renderer.render(scene, camera);
+  if (mixer) mixer.update(0.02);
+};
+reRender3D();
+
+window.addEventListener("resize", () => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+});
+</script>
     <link rel="stylesheet" href="https://public.codepenassets.com/css/normalize-5.0.0.min.css">
     <link rel="stylesheet" href="./style.css">
     <style>
@@ -16,45 +76,46 @@
         align-items: center;
         padding: 2em;
         position: relative;
+        z-index: 1;
       }
       .auth-box {
-        background-color: rgba(27, 27, 27, 0.9);
+        background-color: rgba(27, 27, 27, 0.85);
         backdrop-filter: blur(20px);
         border: 1px solid rgba(238, 248, 206, 0.1);
         border-radius: 20px;
-        padding: 3em 2.5em;
-        width: min(500px, 92vw);
+        padding: 2em 2em;
+        width: min(420px, 92vw);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
       }
       .auth-header {
         text-align: center;
-        margin-bottom: 2.5em;
+        margin-bottom: 1.8em;
       }
       .auth-header h1 {
         font-family: "devil breeze", sans-serif;
-        font-size: 3em;
+        font-size: 2em;
         color: #d1ff48;
-        margin-bottom: 0.5em;
+        margin-bottom: 0.3em;
         font-weight: bold;
       }
       .auth-header p {
         color: #eef8ce;
-        font-size: 1em;
+        font-size: 0.9em;
         opacity: 0.8;
       }
       .auth-form {
         display: flex;
         flex-direction: column;
-        gap: 1.5em;
+        gap: 1.2em;
       }
       .form-group {
         display: flex;
         flex-direction: column;
-        gap: 0.5em;
+        gap: 0.4em;
       }
       .form-group label {
         color: #eef8ce;
-        font-size: 0.9em;
+        font-size: 0.85em;
         font-weight: 500;
         text-transform: uppercase;
         letter-spacing: 0.5px;
@@ -63,9 +124,9 @@
         background-color: rgba(238, 248, 206, 0.05);
         border: 1px solid rgba(238, 248, 206, 0.2);
         border-radius: 8px;
-        padding: 1em;
+        padding: 0.8em;
         color: #eef8ce;
-        font-size: 1em;
+        font-size: 0.95em;
         font-family: "Poppins", sans-serif;
         transition: all 0.3s ease;
       }
@@ -83,13 +144,13 @@
         color: #1b1b1b;
         border: none;
         border-radius: 8px;
-        padding: 1em 2em;
-        font-size: 1.1em;
+        padding: 0.9em 2em;
+        font-size: 1em;
         font-weight: 600;
         font-family: "Poppins", sans-serif;
         cursor: pointer;
         transition: all 0.3s ease;
-        margin-top: 0.5em;
+        margin-top: 0.3em;
       }
       .primary-button:hover {
         background-color: #c4f038;
@@ -101,14 +162,14 @@
       }
       .auth-footer {
         text-align: center;
-        margin-top: 2em;
-        padding-top: 2em;
+        margin-top: 1.5em;
+        padding-top: 1.5em;
         border-top: 1px solid rgba(238, 248, 206, 0.1);
       }
       .auth-footer p {
         color: rgba(238, 248, 206, 0.7);
-        font-size: 0.9em;
-        margin-bottom: 1em;
+        font-size: 0.85em;
+        margin-bottom: 0.8em;
       }
       .auth-footer a {
         color: #d1ff48;
@@ -121,25 +182,26 @@
       }
       .back-link {
         position: absolute;
-        top: 2em;
-        left: 2em;
+        top: 1.5em;
+        left: 1.5em;
         color: #eef8ce;
         text-decoration: none;
-        font-size: 1em;
+        font-size: 0.95em;
         display: flex;
         align-items: center;
         gap: 0.5em;
         transition: color 0.3s ease;
-        z-index: 10;
+        z-index: 100;
       }
       .back-link:hover {
         color: #d1ff48;
       }
       .error-message, .success-message {
-        padding: 1em;
+        padding: 0.8em;
         border-radius: 8px;
-        font-size: 0.9em;
+        font-size: 0.85em;
         display: none;
+        margin-bottom: 1em;
       }
       .error-message {
         background-color: rgba(255, 0, 0, 0.1);
@@ -154,12 +216,18 @@
       .error-message.show, .success-message.show {
         display: block;
       }
+      #container3D {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+      }
       @media screen and (max-width: 767px) {
         .auth-header h1 {
-          font-size: 2em;
+          font-size: 1.6em;
         }
         .auth-box {
-          padding: 2em 1.5em;
+          padding: 1.5em 1.5em;
         }
         .back-link {
           top: 1em;
@@ -170,7 +238,12 @@
   </head>
     
   <body>
-    <a href="/" class="back-link">← Back to Home</a>
+    <a href="/" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Back to Home
+    </a>
     
     <div class="auth-container">
       <div class="auth-box">
@@ -238,12 +311,14 @@
         
         <div class="auth-footer">
           <p>Already have an account? <a href="/login/">Login here</a></p>
-          <p style="margin-top: 1em; font-size: 0.8em; opacity: 0.6;">
+          <p style="margin-top: 1em; font-size: 0.75em; opacity: 0.6;">
             &copy; 2024 JoeKym Labs<sup>TM</sup>. All rights reserved.
           </p>
         </div>
       </div>
     </div>
+    
+    <div id="container3D"></div>
     
     <script>
       const SIGNUP_ENDPOINT = "https://script.google.com/macros/s/AKfycbySuA3AL-oLvvweelRbamR1moPNg8vyQpeYxld2iTdSQcTKM91SV89m1LHRkMF0X-a9/exec";
@@ -281,6 +356,7 @@
         }
         
         hideMessage(errorMessage);
+        hideMessage(successMessage);
         
         const payload = {
           fullname: fullName,
@@ -289,8 +365,7 @@
           confirmpassword: confirmPassword
         };
 
-        // Google Apps Script Web Apps - use hidden iframe form submission
-        // This avoids CORS issues and redirect problems
+        // Submit using form to iframe (most reliable for Google Apps Script)
         const iframe = document.createElement('iframe');
         iframe.name = 'hiddenSignupFrame';
         iframe.style.display = 'none';
@@ -301,43 +376,58 @@
         form.action = SIGNUP_ENDPOINT;
         form.target = 'hiddenSignupFrame';
         
-        // Add form fields
-        const fields = {
-          fullname: payload.fullname,
-          email: payload.email,
-          password: payload.password,
-          confirmpassword: payload.confirmpassword
-        };
-        
-        Object.keys(fields).forEach(key => {
-          const input = document.createElement('input');
-          input.type = 'hidden';
-          input.name = key;
-          input.value = fields[key];
-          form.appendChild(input);
-        });
+        form.appendChild(createHiddenInput('fullname', payload.fullname));
+        form.appendChild(createHiddenInput('email', payload.email));
+        form.appendChild(createHiddenInput('password', payload.password));
+        form.appendChild(createHiddenInput('confirmpassword', payload.confirmpassword));
         
         document.body.appendChild(form);
         
-        // Listen for iframe load to detect completion
+        let submitted = false;
         iframe.onload = function() {
-          // Store user data for profile page
-          sessionStorage.setItem('userEmail', email);
-          sessionStorage.setItem('userName', fullName);
-          sessionStorage.setItem('signupDate', new Date().toISOString());
-          
-          // Data has been submitted to Google Sheets
-          showSuccess('Account created successfully! Redirecting to your profile...');
-          setTimeout(() => {
-            document.getElementById('signupForm').reset();
-            document.body.removeChild(form);
-            document.body.removeChild(iframe);
-            window.location.href = '/profile/';
-          }, 1500);
+          if (!submitted) {
+            submitted = true;
+            // Store user data for profile page
+            sessionStorage.setItem('userEmail', email);
+            sessionStorage.setItem('userName', fullName);
+            sessionStorage.setItem('signupDate', new Date().toISOString());
+            
+            showSuccess('Account created successfully! Redirecting to your profile...');
+            setTimeout(() => {
+              document.getElementById('signupForm').reset();
+              if (document.body.contains(form)) document.body.removeChild(form);
+              if (document.body.contains(iframe)) document.body.removeChild(iframe);
+              window.location.href = '/profile/';
+            }, 1500);
+          }
         };
         
-        // Submit the form
+        // Fallback timeout to ensure data is saved
+        setTimeout(() => {
+          if (!submitted) {
+            submitted = true;
+            sessionStorage.setItem('userEmail', email);
+            sessionStorage.setItem('userName', fullName);
+            sessionStorage.setItem('signupDate', new Date().toISOString());
+            showSuccess('Account created successfully! Redirecting to your profile...');
+            setTimeout(() => {
+              document.getElementById('signupForm').reset();
+              if (document.body.contains(form)) document.body.removeChild(form);
+              if (document.body.contains(iframe)) document.body.removeChild(iframe);
+              window.location.href = '/profile/';
+            }, 1500);
+          }
+        }, 2000);
+        
         form.submit();
+      }
+      
+      function createHiddenInput(name, value) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = name;
+        input.value = value;
+        return input;
       }
       
       function showError(message) {
@@ -368,4 +458,3 @@
   </body>
   
 </html>
-
